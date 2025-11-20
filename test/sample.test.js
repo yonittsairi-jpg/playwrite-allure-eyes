@@ -7,7 +7,7 @@ const runner = new ClassicRunner();
 test("playwright-allure-eyes", async ({ page }) => {
     const eyes = new Eyes(runner);
     await eyes.open(page, 'My App', 'Parallel Test');
-    const apiKey=process.env.API_KEY
+    const apiKey=process.env.APPLITOOLS_API_KEY
 
     eyes.setApiKey(apiKey)
     try {
