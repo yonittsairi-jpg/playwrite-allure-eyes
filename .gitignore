@@ -1,0 +1,19 @@
+    # Ignore all .log files
+    *.log
+
+    # Ignore the 'build' directory
+    /build/
+
+    # Ignore specific temporary files
+    *.tmp
+    *.swp
+
+    # Ignore IDE-specific files (e.g., for Visual Studio Code)
+    .vscode/
+    .idea/
+
+    # Ignore environment variables file
+    .env
+
+    # Ignore macOS specific files
+    .DS_Store

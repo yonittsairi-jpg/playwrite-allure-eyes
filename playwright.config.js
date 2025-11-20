@@ -14,6 +14,10 @@ export default defineConfig({
       },
     ],
   ],
+    use: {
+        screenshot: 'on', // Optional: helpful for allure reports
+        video: 'retain-on-failure', // Optional
+    },
   projects: [
     {
       name: "chromium",
