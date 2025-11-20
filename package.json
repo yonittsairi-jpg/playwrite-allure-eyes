@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "dotenv": "^17.2.3",
     "@applitools/eyes-playwright": "^1.41.2",
     "@playwright/test": "^1.48.2",
     "allure-js-commons": "^3.0.6",

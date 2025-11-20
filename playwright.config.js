@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { devices, defineConfig } = require("@playwright/test");
 
 export default defineConfig({
@@ -20,7 +21,7 @@ export default defineConfig({
     },
   projects: [
     {
-      name: "chromium",
+      name: "playwright-allure-eyes",
       use: {
         ...devices["Desktop Chrome"],
       },

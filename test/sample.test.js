@@ -4,7 +4,7 @@ const { Eyes, Target, ClassicRunner } = require("@applitools/eyes-playwright");
 
 const runner = new ClassicRunner();
 
-test("fast parallel download test", async ({ page }) => {
+test("playwright-allure-eyes", async ({ page }) => {
     const eyes = new Eyes(runner);
     await eyes.open(page, 'My App', 'Parallel Test');
     const apiKey=process.env.API_KEY
@@ -48,7 +48,7 @@ test("fast parallel download test", async ({ page }) => {
 
                     // Attach immediately to Allure
                     await allure.attachment(
-                        `${stepName} [${step.isDifferent ? "Mismatch" : "Pass"}]`,
+                        `${stepName} [${step.isDifferent ? "Mismatch - image diff is displayed" : "Pass - check point image is displayed"}]`,
                         Buffer.from(arrayBuffer),
                         "image/png"
                     );
@@ -68,9 +68,23 @@ test("fast parallel download test", async ({ page }) => {
         if (results.getStatus() !== 'Passed') {
             throw new Error(`Visual differences found!`);
         }
+        const applitoolsUrl = results.getUrl();
 
+        //  Attach the URL to the Allure report using the standard 'link' or 'issue' API
+        //    (Requires allure-playwright or allure-js-commons)
+        await allure.link(applitoolsUrl, "Applitools Visual Results");
+        //Add result json if needed
+        // await allure.attachment(
+        //     "Applitools Raw JSON",
+        //     JSON.stringify(results, null, 2),
+        //     "application/json"
+        // );
+        if (results.getStatus() !== 'Passed') {
+            throw new Error(`Visual differences found! See details: ${applitoolsUrl}`);
+        }
     } catch (error) {
         await eyes.abortIfNotClosed();
         throw error;
     }
+
 });
