@@ -15,3 +15,4 @@
 The generated report is available here: [https://allure-examples.github.io/playwright-npm-cjs-js](https://allure-examples.github.io/playwright-npm-cjs-js/)
 # playwrite-allure-eyes
 # playwrite-allure-eyes
+# playwrite-allure-eyes
