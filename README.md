@@ -1,8 +1,4 @@
-Here is a significantly improved, professional, and clean version of your `README.md`.
 
-I have organized it into logical sections (Setup, Usage, Configuration), corrected the "Playwrite" typo, removed the raw JSON dump (converting it into a readable table), and added clear instructions for the Environment variables.
-
------
 
 # Playwright + Allure + Applitools Eyes
 
