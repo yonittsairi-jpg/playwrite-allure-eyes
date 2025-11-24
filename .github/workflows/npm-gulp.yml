@@ -24,7 +24,7 @@ jobs:
 
     - name: Build
       env:
-        APLITOOLS_API_KEY: ${{ secrets.APLITOOLS_API_KEY}}
+        APPLITOOLS_API_KEY: ${{ secrets.APPLITOOLS_API_KEY}}
       run: |
         npm install
         npm audit fix
