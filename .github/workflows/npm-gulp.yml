@@ -28,4 +28,5 @@ jobs:
       run: |
         npm install
         npm audit fix
+        npx playwright install
         npm run runlivetest
