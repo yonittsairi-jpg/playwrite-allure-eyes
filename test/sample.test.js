@@ -6,8 +6,14 @@ const runner = new ClassicRunner();
 
 test("playwright-allure-eyes", async ({ page }) => {
     const eyes = new Eyes(runner);
-    await eyes.open(page, 'My App', 'Parallel Test');
     const apiKey=process.env.APPLITOOLS_API_KEY
+    if (!apiKey) {
+        throw new Error('APPLITOOLS_API_KEY environment variable is not set!');
+    }
+
+    // Set the key configuration
+    eyes.setApiKey(apiKey);
+    await eyes.open(page, 'My App', 'Parallel Test');
 
     eyes.setApiKey(apiKey)
     try {
