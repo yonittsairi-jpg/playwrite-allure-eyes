@@ -25,6 +25,7 @@ jobs:
     - name: Build
       env:
         APPLITOOLS_API_KEY: ${{ secrets.APPLITOOLS_API_KEY}}
+        APPLITOOLS_BATCH_ID: ${{ github.event.pull_request.head.sha || github.sha }}
       run: |
         npm install
         npm audit fix
