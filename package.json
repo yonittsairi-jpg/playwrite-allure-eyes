@@ -5,7 +5,9 @@
   "scripts": {
     "test": "playwright test",
     "clean-report": "npx allure generate allure-results --clean -o allure-report",
-    "runlivetest": "npm run test\n npx allure serve out/allure-results"
+    "runlivetest": "npm run test\n npx allure serve out/allure-results",
+    "test-allure": "npm run test\n npx allure generate out/allure-results --clean -o out/allure-report"
+
   },
   "keywords": [],
   "author": "",

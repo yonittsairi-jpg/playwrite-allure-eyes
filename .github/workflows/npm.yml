@@ -30,4 +30,5 @@ jobs:
         npm install
         npm audit fix
         npx playwright install
-        npm run runlivetest
+        npm run test-allure
+#        curl -v -X DELETE "$APPLITOOLS_SERVER_URL/api/sessions/batches/$APPLITOOLS_BATCH_ID/close/bypointerid?apiKey=$APPLITOOLS_API_KEY"
