@@ -17,7 +17,7 @@ test("playwright-allure-eyes", async ({ page }) => {
 
     eyes.setApiKey(apiKey)
     try {
-
+console.log('popopo')
         await page.goto("https://example.org");
         await eyes.check("Main Page", Target.window());
 
