@@ -57,6 +57,8 @@ jobs:
         uses: wei/curl@v1.1.1
         with:
           # Fixed indentation and added "" for the empty -d flag
-          args: -X POST -d "" -H "accept: */*" "https://eyesapi.applitools.com/api/externals/github/servers/github.com/commit/${{ env.APPLITOOLS_BATCH_ID }}/complete?apiKey=${{ env.APPLITOOLS_API_KEY }}"
+          args: -X POST -d -H "accept:*/*" https://eyesapi.applitools.com/api/externals/github/servers/github.com/commit/${{env.APPLITOOLS_BATCH_ID}}/complete?apiKey=${{env.APPLITOOLS_API_KEY}}
+
+
 
           
