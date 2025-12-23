@@ -1,5 +1,14 @@
 name: NodeJS
 
+env:
+  # Using the correct secret syntax
+  APPLITOOLS_API_KEY: ${{ secrets.APPLITOOLS_API_KEY }}
+  # Setting a consistent Batch ID for PRs vs Pushes
+  APPLITOOLS_BATCH_ID: ${{ github.event.pull_request.head.sha  }}
+  APPLITOOLS_ID_CANDIDATE: ${{github.event.pull_request.merge_commit_sha}}
+  APPLITOOLS_ID_CANDIDATE1: ${{github.event.pull_request.head.sha}}
+  APPLITOOLS_ID_CANDIDATE2: ${{github.sha}}
+
 on:
   push:
     branches: [ "main" ]
@@ -30,14 +39,6 @@ jobs:
           npx playwright install --with-deps
 
       - name: Build and Test
-        env:
-          # Using the correct secret syntax
-          APPLITOOLS_API_KEY: ${{ secrets.APPLITOOLS_API_KEY }}
-          # Setting a consistent Batch ID for PRs vs Pushes
-          APPLITOOLS_BATCH_ID: ${{ github.event.pull_request.head.sha  }}
-          APPLITOOLS_ID_CANDIDATE: ${github.event.pull_request.merge_commit_sha}
-          APPLITOOLS_ID_CANDIDATE1: ${github.event.pull_request.head.sha}
-          APPLITOOLS_ID_CANDIDATE2: ${github.sha}
         run: |
           echo "Batch ID: $APPLITOOLS_BATCH_ID"
           echo "Candidate: $APPLITOOLS_ID_CANDIDATE"
@@ -45,3 +46,14 @@ jobs:
           echo "Candidate 2: $APPLITOOLS_ID_CANDIDATE2"
               
           npm run test-allure
+      - name: batch-completion-notification:
+        # This runs after all the test jobs have completed
+        runs-on: ubuntu-latest
+        if: always()
+        steps:
+          - name: Update Applitools batch status
+            uses: wei/curl@v1.1.1
+            with:
+            args: -X POST -d -H "accept:*/*" https://eyesapi.applitools.com/api/externals/github/servers/github.com/commit/${{env.APPLITOOLS_BATCH_ID}}/complete?apiKey=${{env.APPLITOOLS_API_KEY}}
+      
+      
