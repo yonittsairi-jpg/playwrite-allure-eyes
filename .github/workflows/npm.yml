@@ -3,11 +3,12 @@ name: NodeJS
 env:
   # Using the correct secret syntax
   APPLITOOLS_API_KEY: ${{ secrets.APPLITOOLS_API_KEY }}
-  # Setting a consistent Batch ID for PRs vs Pushes
-  APPLITOOLS_BATCH_ID: ${{ github.event.pull_request.head.sha  }}
-  APPLITOOLS_ID_CANDIDATE: ${{github.event.pull_request.merge_commit_sha}}
-  APPLITOOLS_ID_CANDIDATE1: ${{github.event.pull_request.head.sha}}
-  APPLITOOLS_ID_CANDIDATE2: ${{github.sha}}
+  # NOTE: github.event.pull_request is null on "push" events. 
+  # This logic handles PRs, but on "push" to main, BATCH_ID will be empty.
+  APPLITOOLS_BATCH_ID: ${{ github.event.pull_request.head.sha || github.sha }}
+  APPLITOOLS_ID_CANDIDATE: ${{ github.event.pull_request.merge_commit_sha }}
+  APPLITOOLS_ID_CANDIDATE1: ${{ github.event.pull_request.head.sha }}
+  APPLITOOLS_ID_CANDIDATE2: ${{ github.sha }}
 
 on:
   push:
@@ -31,7 +32,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          # REMOVED the incorrect local file path that was here
 
       - name: Install Dependencies & Install Playwright
         run: |
@@ -44,16 +44,19 @@ jobs:
           echo "Candidate: $APPLITOOLS_ID_CANDIDATE"
           echo "Candidate 1: $APPLITOOLS_ID_CANDIDATE1"
           echo "Candidate 2: $APPLITOOLS_ID_CANDIDATE2"
-              
+            
           npm run test-allure
-      - name: batch-completion-notification:
-        # This runs after all the test jobs have completed
-        runs-on: ubuntu-latest
-        if: always()
-        steps:
-          - name: Update Applitools batch status
-            uses: wei/curl@v1.1.1
-            with:
-            args: -X POST -d -H "accept:*/*" https://eyesapi.applitools.com/api/externals/github/servers/github.com/commit/${{env.APPLITOOLS_BATCH_ID}}/complete?apiKey=${{env.APPLITOOLS_API_KEY}}
-      
-      
+
+  # This is now a separate job, indented correctly under 'jobs'
+  batch-completion-notification:
+    runs-on: ubuntu-latest
+    needs: [build] # Wait for the build job to finish
+    if: always()   # Run even if tests fail
+    steps:
+      - name: Update Applitools batch status
+        uses: wei/curl@v1.1.1
+        with:
+          # Fixed indentation and added "" for the empty -d flag
+          args: -X POST -d "" -H "accept: */*" "https://eyesapi.applitools.com/api/externals/github/servers/github.com/commit/${{ env.APPLITOOLS_BATCH_ID }}/complete?apiKey=${{ env.APPLITOOLS_API_KEY }}"
+
+          
