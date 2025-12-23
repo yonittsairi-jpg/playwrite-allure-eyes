@@ -42,6 +42,5 @@ jobs:
           echo "Candidate: $APPLITOOLS_ID_CANDIDATE"
           echo "Candidate 1: $APPLITOOLS_ID_CANDIDATE1"
           echo "Candidate 2: $APPLITOOLS_ID_CANDIDATE2"
-          echo "API Key is set: ${APPLITOOLS_API_KEY:+yes}"
               
           npm run test-allure
