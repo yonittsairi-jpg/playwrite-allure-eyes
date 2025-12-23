@@ -33,6 +33,15 @@ jobs:
           # Using the correct secret syntax
           APPLITOOLS_API_KEY: ${{ secrets.APPLITOOLS_API_KEY }}
           # Setting a consistent Batch ID for PRs vs Pushes
-          APPLITOOLS_BATCH_ID: ${{ github.event.pull_request.head.sha || github.sha }}
+          APPLITOOLS_BATCH_ID: ${{ github.event.pull_request.head.sha  }}
+          APPLITOOLS_ID_CANDIDATE: ${github.event.pull_request.merge_commit_sha}
+          APPLITOOLS_ID_CANDIDATE1: ${github.event.pull_request.head.sha}
+          APPLITOOLS_ID_CANDIDATE2: ${github.sha}
         run: |
+          echo "Batch ID: $APPLITOOLS_BATCH_ID"
+          echo "Candidate: $APPLITOOLS_ID_CANDIDATE"
+          echo "Candidate 1: $APPLITOOLS_ID_CANDIDATE1"
+          echo "Candidate 2: $APPLITOOLS_ID_CANDIDATE2"
+          echo "API Key is set: ${APPLITOOLS_API_KEY:+yes}"
+              
           npm run test-allure
