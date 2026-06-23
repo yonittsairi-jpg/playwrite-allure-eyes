@@ -1,0 +1,59 @@
+# Use the official Playwright image.
+# This includes Node.js and all necessary browser dependencies pre-installed.
+# Using 'jammy' (Ubuntu 22.04) based image.
+image: mcr.microsoft.com/playwright:v1.48.1-jammy
+
+stages:
+  - test
+  - deploy
+
+# Cache node_modules to speed up future builds
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+test_job:
+  stage: test
+  script:
+    - npm install
+    # Ensure browsers match the version in package.json
+    - npx playwright install --with-deps
+    
+    # Set the Batch ID (using the commit SHA ensures unique batches per commit for Applitools)
+    - export APPLITOOLS_BATCH_ID=$CI_COMMIT_SHA
+    
+    # Run the tests (assuming 'npm run test-allure' runs playwright and generates raw results)
+    - npm run test-allure
+    
+    # Generate the Allure Report static files into the 'allure-report' folder
+    # Note: We use -o to specify the output directory
+#    - npx allure generate out/allure-results -o allure-report
+
+  # Pass the secret variable (configured in GitLab Settings > CI/CD > Variables)
+  variables:
+    APPLITOOLS_API_KEY: $APPLITOOLS_API_KEY
+    APPLITOOLS_BATCH_ID: $CI_COMMIT_SHA
+
+  # Save the report as an artifact so you can browse/download it manually
+#  artifacts:
+#    when: always
+#    paths:
+#      - allure-report/
+#      - out/allure-results/
+#    expire_in: 1 week
+
+# OPTIONAL: This job publishes the Allure Report to GitLab Pages
+# You can view the report at https://<your-username>.gitlab.io/<repo-name>
+#pages:
+#  stage: deploy
+#  script:
+#    - mkdir -p public
+#    # Copy the generated report from the test job into the public folder
+#    - cp -r allure-report/* public
+#  artifacts:
+#    paths:
+#      - public
+#  # Only publish the report link for the main branch to keep the pages environment clean
+#  rules:
+#    - if: $CI_COMMIT_BRANCH == "main"
