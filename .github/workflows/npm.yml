@@ -5,6 +5,7 @@ env:
   APPLITOOLS_API_KEY: ${{ secrets.APPLITOOLS_API_KEY }}
   # NOTE: github.event.pull_request is null on "push" events. 
   # This logic handles PRs, but on "push" to main, BATCH_ID will be empty.
+  BRANCH_NAME : "YONIT"
   APPLITOOLS_BATCH_ID: ${{ github.event.pull_request.head.sha || github.sha }}
   APPLITOOLS_ID_CANDIDATE: ${{ github.event.pull_request.merge_commit_sha }}
   APPLITOOLS_ID_CANDIDATE1: ${{ github.event.pull_request.head.sha }}
