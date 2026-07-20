@@ -18,7 +18,8 @@ test("playwright-allure-eyes", async ({ page }) => {
     eyes.setApiKey(apiKey)
     try {
 console.log('popopo')
-        await page.goto("https://example.org");
+        // await page.goto("https://example.org");
+        await page.goto("https://www.iana.org/help/example-domains");
         await eyes.check("Main Page", Target.window());
 
         // 1. Close Eyes & Get Results
