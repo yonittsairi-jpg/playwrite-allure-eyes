@@ -6,6 +6,8 @@ env:
   # NOTE: github.event.pull_request is null on "push" events. 
   # This logic handles PRs, but on "push" to main, BATCH_ID will be empty.
   BRANCH_NAME : "YONIT"
+  APPLITOOLS_BRANCH_NAME: ${{ github.repository }}/${{ github.head_ref || github.ref_name }}
+  APPLITOOLS_PARENT_BRANCH_NAME: ${{ github.repository }}/${{ github.base_ref || 'main' }}
   APPLITOOLS_BATCH_ID: ${{ github.event.pull_request.head.sha || github.sha }}
   APPLITOOLS_ID_CANDIDATE: ${{ github.event.pull_request.merge_commit_sha }}
   APPLITOOLS_ID_CANDIDATE1: ${{ github.event.pull_request.head.sha }}
