@@ -1,4 +1,4 @@
-  
+   
 
 # Playwright + Allure + Applitools Eyes
 
